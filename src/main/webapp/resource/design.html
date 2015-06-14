@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>ReportZ Online</title>
+    <link href="bootstrap.css" rel="stylesheet">
+    <link href="style.css" rel="stylesheet">
+	<script type="text/javascript" src="jquery.js"></script>
+    <script type="text/javascript">
+
+$(document).ready(function(){
+  
+	     $('#button-pdf').hide();
+
+  
+});
+
+function titleClick(){
+      $('#preview-caption').hide();
+      $('#preview-div').css("display","block");
+	  $('#table').hide();
+	  $('#h2').hide();
+}
+
+function headingClick(){
+      $('#preview-caption').hide();
+      $('#preview-div').css("display","block");
+	  $('#table').hide();
+	  $('#h2').show();
+}
+
+function tableClick(){
+      $('#preview-caption').hide();
+      $('#preview-div').css("display","block");
+	  $('#table').show();
+	  $('#button-pdf').show();
+} 
+
+function getPDF(){
+   var json={
+       "title":"title",
+	   "heading":"heading",
+	   "tabler":{
+	       "rows":4,
+		   "columns":5,
+		   "th1":"table heading1",
+		   "th2":"table heading2",
+		   "th3":"table heading3",
+		   "th4":"table heading4",
+		   "th5":"table heading5",	       
+	   }
+     
+   };
+ alert(JSON.stringify(json));
+
+  $.ajax({ 
+             type: "GET",
+             dataType: "jsonp",
+			 data:json,
+             url: "http://localhost:7001/ReportZServer/service/pdf/get",
+             success: function(data){
+             
+             }
+			 
+         });
+		 
+  
+}
+function getPDFReq(){
+   var json={
+       "title":"title",
+	   "heading":"heading",
+	   "table":{
+	       "rows":4,
+		   "columns":5,
+		   "th1":"table heading1",
+		   "th2":"table heading2",
+		   "th3":"table heading3",
+		   "th4":"table heading4",
+		   "th5":"table heading5",	       
+	   }
+     
+   };
+   $('#txt-json').val(JSON.stringify(json));
+ return JSON.stringify(json);
+ 
+ }
+function testConnection(){
+   var json={
+       "hostName":$('#hostName').val(),
+	   "userName":$('#userName').val(),
+	   "password":$('#password').val(),
+	   "defaultSchema":$('#defaultSchema').val(),
+	   "driverType":$('#driverType').val(),
+	      
+	   }
+  $('#data-json').val(JSON.stringify(json));
+  $.ajax({ 
+             type: "POST",
+             dataType: "json",
+			 data:$("#data-json").serialize(),
+             url: "http://localhost:7001/ReportZServer/service/db/testData",
+             success: function(response){
+                alert('Test Success');
+             }
+			 
+         });
+ 
+ 
+ }
+</script>
+	
+  </head>
+
+  <body>
+
+    <nav class="navbar navbar-default navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand  em-text" href="index.html">ReportZ Online</a>
+        </div>
+        <div id="navbar" class="collapse navbar-collapse">
+          <ul class="nav navbar-nav">
+            <li class="active"><a href="design.html">Design PDF Report</a></li>
+            <li ><a href="about.html">About</a></li>
+            <li><a href="contact.html">Contact</a></li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+	<div class="design">
+	<div class ="container">
+	  <div class="row">
+	  <div class="col-md-4 col-md-12">
+	  		<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+  <div class="panel panel-default">
+    <div class="panel-heading" role="tab" id="headingOne">
+      <h4 class="panel-title">
+        <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+          Set Title/Heading
+        </a>
+      </h4>
+    </div>
+    <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+      <div class="panel-body">
+	  <input type="button" id="button" class="btn btn-default" value="Click to Add title" onclick="titleClick()"/></br>
+	  <input type="button" id="button" class="btn btn-default" value="Click to Add Heading" onclick="headingClick()"/>
+      </div>
+    </div>
+  </div>
+  <div class="panel panel-default">
+    <div class="panel-heading" role="tab" id="headingTwo">
+      <h4 class="panel-title">
+        <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+          Include Label
+        </a>
+      </h4>
+    </div>
+    <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+      <div class="panel-body">
+	  <input type="button" id="button" class="btn btn-default" value="Click to Add Label"/></br>
+        </div>
+    </div>
+  </div>
+  <div class="panel panel-default">
+    <div class="panel-heading" role="tab" id="headingThree">
+      <h4 class="panel-title">
+        <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+          Include Table(Sorry only 4x5)
+        </a>
+      </h4>
+    </div>
+    <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+      <div class="panel-body">
+	  <input type="button" id="button-table"class="btn btn-default" value="Click to Add Table" onclick="tableClick()"/></br>
+      </div>
+    </div>
+  </div>
+   <div class="panel panel-default">
+    <div class="panel-heading" role="tab" id="headingFour">
+      <h4 class="panel-title">
+        <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
+          Include DATASource
+        </a>
+      </h4>
+    </div>
+    <div id="collapseFour" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingFour">
+      <div class="panel-body">
+	  <form>
+	  <div class="form-group">
+		<input type="text" id="hostName" class="form-control" placeholder="Enter Host" id="hostName">
+	  </div>
+	  <div class="form-group">
+		<input type="text" id="userName" class="form-control" placeholder="Enter UserName" id="userName">
+	  </div>
+	  <div class="form-group">
+		<input type="password" id="password" class="form-control" placeholder="Enter Password" id="password">
+	  </div>
+	  <div class="form-group">
+		<input type="text" id="defaultSchema" class="form-control" placeholder="Enter Default Schema" id="defaultSchema">
+	  </div>
+	  <div class="form-group">
+		<input type="text" id="driverType" class="form-control" placeholder="Enter Driver Type" id="driverType">
+	  </div>
+	  <input type="text" id="data-json" class="text-json"  name="json"/>
+	  <input type="button" id="button-data" class="btn btn-default" value="Test Connection" onclick="testConnection()"/>
+	  </form>
+      </div>
+    </div>
+  </div>
+</div>
+	  </div>
+      <div class="col-md-8 col-md-12">
+	  <form action="http://localhost:7001/ReportZServer/service/pdf/get" method="post">
+	  <input type="submit" id="button-pdf" class="btn btn-default" value="Click to GetPDF" onclick="getPDFReq()"/></br>
+	  <input type="text" id="txt-json" class="text-json"  name="json"/>
+	  </form>
+	  <p id="preview-caption">Your Preview Can be Seen here</p>
+	  <div id="preview-div" class="preview">
+	  <h1 id="h1">Title</h1>
+	  <h2 id="h2">Heading</h2>
+	  <p id="label"></p>
+	  
+	  
+      <table id="table" class="tablestyle">
+	  <tr>
+			<td>one</td>
+			<td>one</td>
+			<td>one</td>
+			<td>one</td>
+			<td>one</td>
+	  </tr>
+	  <tr>
+			<td>two</td>
+			<td>two</td>
+			<td>two</td>
+			<td>two</td>
+			<td>two</td>
+	  </tr>
+	  <tr>
+			<td>three</td>
+			<td>three</td>
+			<td>three</td>
+			<td>three</td>
+			<td>three</td>
+	  </tr>
+	  <tr>
+			<td>four</td>
+			<td>four</td>
+			<td>four</td>
+			<td>four</td>
+			<td>four</td>
+	  </tr>
+      </table>	 
+</div>	  
+	  </div>	  
+	  </div>
+	</div>
+	</div>
+	<footer>
+	<div class="container">
+	<div class="row">
+	<div class="col-md-6 col-xs-12">
+	<ul>
+		<li><a href="#">Home</a></li>
+		<li><a href="#">About</a></li>
+		<li><a href="#">Contact</a></li>
+		<li><a href="#">Privacy Policy</a></li>
+	</ul>
+	</div>
+	<div class="col-md-6 col-xs-12">
+		<p>CopyRight &copy; 2015,All Rights Reserved</p>
+	</div>
+	</div>
+	</div>
+	</footer>
+    <script type="text/javascript" src="jquery.js"></script>
+    <script src="bootstrap.js"></script>
+	
+  </body>
+</html>
